@@ -48,52 +48,116 @@ export interface SearchHit {
   score: number;
 }
 
+// Normalisasi ejaan: kata serapan Inggris → ejaan baku Indonesia yang
+// dipakai di KBLI. Membantu user yang mengetik "cafe" → match "kafe".
+const SPELL_MAP: Record<string, string> = {
+  cafe: 'kafe',
+  computer: 'komputer',
+  restaurant: 'restoran',
+  software: 'perangkat lunak',
+  hardware: 'perangkat keras',
+  application: 'aplikasi',
+  technology: 'teknologi',
+  business: 'bisnis',
+  service: 'jasa',
+  shop: 'toko',
+  store: 'toko',
+  hotel: 'hotel',
+  clinic: 'klinik',
+  pharmacy: 'apotek',
+  travel: 'perjalanan',
+  online: 'daring',
+  offline: 'luring',
+};
+
+function normalizeQuery(q: string): string {
+  const tokens = q.toLowerCase().split(/(\s+)/);
+  return tokens
+    .map((t) => SPELL_MAP[t] || t)
+    .join('');
+}
+
 // Search: kembalikan item yang cocok, diurutkan berdasarkan relevansi.
 export function search(query: string, limit = 50): SearchHit[] {
   if (!index || !query.trim()) return [];
-  const q = query.trim();
+  const q = normalizeQuery(query.trim());
 
-  // Cek apakah query adalah kode (5 digit atau sebagian)
+  // Cek apakah query adalah kode (digit-only). Kode KBLI 5-digit sudah
+  // structured, jadi kita lakukan prefix search langsung di data — jauh
+  // lebih akurat daripada FlexSearch yang men-tokenize angka.
   const isKodeQuery = /^\d+$/.test(q);
+  if (isKodeQuery) {
+    const hits: SearchHit[] = [];
+    // Exact match dapat skor tertinggi, lalu prefix.
+    for (let i = 0; i < data.length && hits.length < limit; i++) {
+      const item = data[i];
+      let score = 0;
+      if (item.kode === q) score = 1000;
+      else if (item.kode.startsWith(q)) score = 500;
+      else continue;
+      hits.push({ item, score });
+    }
+    hits.sort((a, b) => b.score - a.score);
+    return hits.slice(0, limit);
+  }
 
-  // Search via FlexSearch
+  // Search via FlexSearch untuk keyword teks
   const rawResults = index.search(q, { limit: limit * 2, suggest: true });
 
-  // FlexSearch mengembalikan array of array (per-term); flatten + dedupe + score
+  // Normalize hasil FlexSearch ke flat list of ids.
+  // FlexSearch bisa return beberapa format tergantung config & versi:
+  //   - Flat array of ids:     [0, 1, 2]            ← default Index
+  //   - Array of arrays:       [[0, 1], [2]]        ← multi-term / Document index
+  //   - Array of {id, score}:  [{id:0, score:9}]    ← saat `enrich:true`
+  // Kita flatten semuanya jadi satu list ids dengan posisi untuk scoring.
+  const ids: number[] = [];
+  for (const entry of rawResults as unknown[]) {
+    if (typeof entry === 'number') {
+      ids.push(entry);
+    } else if (Array.isArray(entry)) {
+      for (const sub of entry) {
+        if (typeof sub === 'number') ids.push(sub);
+        else if (sub && typeof sub === 'object' && 'id' in sub) {
+          ids.push((sub as { id: number }).id);
+        }
+      }
+    } else if (entry && typeof entry === 'object' && 'id' in entry) {
+      ids.push((entry as { id: number }).id);
+    }
+  }
+
+  // Dedupe sambil menjaga urutan (posisi awal = lebih relevan)
   const seen = new Set<number>();
   const hits: SearchHit[] = [];
 
-  for (let r = 0; r < rawResults.length; r++) {
-    const resultArray = rawResults[r] as unknown as number[];
-    if (!Array.isArray(resultArray)) continue;
-    for (const idx of resultArray) {
-      if (seen.has(idx)) continue;
-      seen.add(idx);
-      const item = data[idx];
-      if (!item) continue;
+  for (let r = 0; r < ids.length; r++) {
+    const idx = ids[r];
+    if (seen.has(idx)) continue;
+    seen.add(idx);
+    const item = data[idx];
+    if (!item) continue;
 
-      // Scoring manual untuk boost kode match & judul exact
-      let score = Math.max(0, 9 - r); // posisi awal lebih tinggi
-      const qLow = q.toLowerCase();
+    // Scoring manual untuk boost kode match & judul exact
+    let score = Math.max(0, 1000 - r); // posisi awal lebih tinggi
+    const qLow = q.toLowerCase();
 
-      // Boost: kode persis
-      if (item.kode === q) score += 100;
-      else if (item.kode.startsWith(q)) score += 50;
-      else if (item.kode.includes(q)) score += 20;
+    // Boost: kode persis
+    if (item.kode === q) score += 100;
+    else if (item.kode.startsWith(q)) score += 50;
+    else if (item.kode.includes(q)) score += 20;
 
-      // Boost: judul persis / contains
-      const jLow = item.judul.toLowerCase();
-      if (jLow === qLow) score += 60;
-      else if (jLow.startsWith(qLow)) score += 30;
-      else if (jLow.includes(qLow)) score += 15;
+    // Boost: judul persis / contains
+    const jLow = item.judul.toLowerCase();
+    if (jLow === qLow) score += 60;
+    else if (jLow.startsWith(qLow)) score += 30;
+    else if (jLow.includes(qLow)) score += 15;
 
-      // Kode query: hanya tampilkan yang cocok prefix
-      if (isKodeQuery && !item.kode.startsWith(q)) {
-        score -= 5;
-      }
-
-      hits.push({ item, score });
+    // Kode query: hanya tampilkan yang cocok prefix
+    if (isKodeQuery && !item.kode.startsWith(q)) {
+      score -= 5;
     }
+
+    hits.push({ item, score });
   }
 
   // Sort by score desc
