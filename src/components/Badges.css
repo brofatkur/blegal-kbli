@@ -1,0 +1,100 @@
+/* Risk badges */
+.risk-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.risk-badge.low {
+  background: var(--risk-low-bg);
+  color: var(--risk-low);
+}
+.risk-badge.mid-low {
+  background: var(--risk-mid-low-bg);
+  color: var(--risk-mid-low);
+}
+.risk-badge.mid-high {
+  background: var(--risk-mid-high-bg);
+  color: var(--risk-mid-high);
+}
+.risk-badge.high {
+  background: var(--risk-high-bg);
+  color: var(--risk-high);
+}
+
+/* Golongan badge */
+.gol-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--brand-grad);
+  color: white;
+  font-weight: 800;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* Perubahan badge */
+.perubahan-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  background: var(--bg-elev-2);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+.perubahan-badge.tetap { color: var(--text-soft); }
+.perubahan-badge.baru {
+  background: var(--risk-low-bg);
+  color: var(--risk-low);
+  border-color: transparent;
+}
+.perubahan-badge.pecah {
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--brand-1);
+  border-color: transparent;
+}
+.perubahan-badge.gabung {
+  background: rgba(139, 92, 246, 0.12);
+  color: var(--brand-2);
+  border-color: transparent;
+}
+.perubahan-badge.recoding {
+  background: var(--risk-mid-high-bg);
+  color: var(--risk-mid-high);
+  border-color: transparent;
+}
+.perubahan-badge.hapus {
+  background: var(--risk-high-bg);
+  color: var(--risk-high);
+  border-color: transparent;
+}
+
+/* Perizinan badges */
+.izin-badges {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.izin-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 10.5px;
+  font-weight: 600;
+  background: var(--bg-elev-2);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}

@@ -1,0 +1,119 @@
+.hero {
+  position: relative;
+  padding: 56px 20px 32px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  animation: floaty 8s ease-in-out infinite;
+}
+.blob-1 {
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, #6366f1, transparent 70%);
+  top: -120px;
+  left: -100px;
+}
+.blob-2 {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, #ec4899, transparent 70%);
+  top: -60px;
+  right: -80px;
+  animation-delay: -2s;
+}
+.blob-3 {
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, #8b5cf6, transparent 70%);
+  bottom: -100px;
+  left: 40%;
+  animation-delay: -4s;
+}
+
+.hero-content {
+  max-width: 760px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+}
+.badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--risk-low);
+  box-shadow: 0 0 0 3px var(--risk-low-bg);
+  animation: pulse 2s infinite;
+}
+
+.hero-title {
+  font-size: clamp(32px, 6vw, 52px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.hero-subtitle {
+  font-size: clamp(14px, 2vw, 17px);
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 620px;
+  margin: 0 auto 24px;
+}
+
+.hero-features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.feature-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  box-shadow: var(--shadow-sm);
+}
+.feature-pill span { font-size: 14px; }
+
+@media (max-width: 640px) {
+  .hero { padding: 32px 16px 24px; }
+  .blob { filter: blur(60px); opacity: 0.3; }
+}

@@ -1,0 +1,61 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Izinkan GITHUB_TOKEN melakukan deploy ke Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Serialisasi deployment: hanya satu build berjalan pada satu waktu
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        env:
+          # Base path untuk project page: /<repo-name>/
+          # Repo brofatkur/blegal-kbli → /blegal-kbli/
+          VITE_BASE_PATH: /blegal-kbli/
+        run: npm run build
+        # npm run build = build:data (regenerate JSON dari CSV) + vite build.
+        # CSV source di-commit di data-source/, csv-parse di devDeps.
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
