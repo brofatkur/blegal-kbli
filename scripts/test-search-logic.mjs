@@ -35,7 +35,19 @@ function normalizeIds(rawResults) {
   return ids;
 }
 
+const SPELL_MAP = {
+  cafe: 'kafe', computer: 'komputer', restaurant: 'restoran',
+  software: 'perangkat lunak', hardware: 'perangkat keras',
+  application: 'aplikasi', technology: 'teknologi', business: 'bisnis',
+  service: 'jasa', shop: 'toko', store: 'toko', hotel: 'hotel',
+  clinic: 'klinik', pharmacy: 'apotek', travel: 'perjalanan',
+};
+function normalizeQuery(q) {
+  return q.toLowerCase().split(/(\s+)/).map((t) => SPELL_MAP[t] || t).join('');
+}
+
 function search(q, limit = 10) {
+  q = normalizeQuery(q);
   // Kode query: prefix search langsung
   const isKodeQuery = /^\d+$/.test(q);
   if (isKodeQuery) {
