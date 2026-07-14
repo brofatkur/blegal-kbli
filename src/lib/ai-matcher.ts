@@ -2,10 +2,12 @@
 // deskripsi aktivitas user → KBLI paling relevan. Tanpa API, langsung jalan.
 //
 // Strategi:
-// 1. Tokenisasi query user + stopword removal
-// 2. Hitung skor TF-IDF sederhana atas field judul + uraian tiap KBLI
-// 3. Boost: kode match, judul exact, sinonim bisnis umum
+// 1. Cek alias istilah awam (sembako, warung, dll) → kode spesifik
+// 2. Tokenisasi query user + stopword removal + sinonim bisnis
+// 3. Hitung skor TF-IDF sederhana atas field judul + uraian tiap KBLI
+// 4. Boost: kode match, judul exact, sinonim bisnis umum
 import type { KbliItem } from '../types';
+import { findAlias } from './aliases';
 
 // Kamus sinonim bisnis → kata kunci KBLI (membantu pencarian natural)
 const SYNONYMS: Record<string, string[]> = {
@@ -96,16 +98,38 @@ export function matchKbli(
 ): MatchResult[] {
   if (!query.trim() || data.length === 0) return [];
 
+  // 1. Cek alias istilah awam dulu (sembako, warung, dll).
+  // Jika cocok, kode-kode alias di-prioritize ke puncak hasil.
+  const aliasMatch = findAlias(query);
+  const results: MatchResult[] = [];
+
+  if (aliasMatch) {
+    for (const kode of aliasMatch.codes) {
+      const item = data.find((d) => d.kode === kode);
+      if (item) {
+        results.push({
+          item,
+          score: 1.0, // skor tertinggi
+          matchedTokens: [aliasMatch.alias],
+        });
+      }
+    }
+  }
+
   let qTokens = tokenize(query);
-  if (qTokens.length === 0) return [];
+  if (qTokens.length === 0) {
+    // Jika tidak ada token (mis. pure alias), kembalikan hasil alias saja
+    return results.slice(0, limit);
+  }
 
   // Expand dengan sinonim
   qTokens = expandQuery(qTokens);
   const qSet = new Set(qTokens);
 
-  const results: MatchResult[] = [];
-
   for (const item of data) {
+    // Skip item yang sudah ditambahkan dari alias
+    if (results.some((r) => r.item.kode === item.kode)) continue;
+
     const itemTokens = item.tokens.split(' ').filter(Boolean);
     if (itemTokens.length === 0) continue;
 
@@ -156,11 +180,19 @@ export function generateReply(
     return `Maaf, saya belum menemukan KBLI yang cocok untuk deskripsi "${query}". Coba gunakan kata kunci yang lebih spesifik, misalnya jenis produk atau layanan utama (contoh: "restoran", "perdagangan pakaian", "jasa pengembangan perangkat lunak").`;
   }
 
+  const aliasMatch = findAlias(query);
   const top = matches[0];
   const lines: string[] = [];
+
   lines.push(
     `Berdasarkan deskripsi Anda, berikut KBLI 2025 yang paling relevan untuk usaha "${query}":\n`,
   );
+
+  // Jika ada alias match, tampilkan penjelasan kontekstual di awal
+  if (aliasMatch?.description) {
+    lines.push(`ℹ️ _${aliasMatch.description}_\n`);
+  }
+
   lines.push(`**🏆 ${top.item.kode} — ${top.item.judul}**`);
   lines.push(`_${top.item.uraian.slice(0, 220)}${top.item.uraian.length > 220 ? '…' : ''}_\n`);
 

@@ -1,6 +1,7 @@
 // Search engine: index FlexSearch untuk pencarian cepat fuzzy/partial.
 import { Index } from 'flexsearch';
 import type { KbliItem } from '../types';
+import { findAlias } from './aliases';
 
 let data: KbliItem[] = [];
 let index: Index | null = null;
@@ -101,8 +102,23 @@ export function search(query: string, limit = 50): SearchHit[] {
     return hits.slice(0, limit);
   }
 
+  // Cek alias istilah awam (sembako, warung, olshop, dll). Jika cocok,
+  // kode-kode terkait di-boost ke puncak hasil.
+  const aliasMatch = findAlias(query);
+
   // Search via FlexSearch untuk keyword teks
   const rawResults = index.search(q, { limit: limit * 2, suggest: true });
+
+  // Jika ada alias match, inject kode-kode aliasnya ke daftar id hasil
+  // (di-depan, supaya dapat skor posisi tertinggi). Kode yang belum ada di
+  // hasil FlexSearch tetap ditambahkan agar tetap muncul.
+  const ids: number[] = [];
+  if (aliasMatch) {
+    for (const kode of aliasMatch.codes) {
+      const idx = data.findIndex((d) => d.kode === kode);
+      if (idx >= 0) ids.push(idx);
+    }
+  }
 
   // Normalize hasil FlexSearch ke flat list of ids.
   // FlexSearch bisa return beberapa format tergantung config & versi:
@@ -110,7 +126,6 @@ export function search(query: string, limit = 50): SearchHit[] {
   //   - Array of arrays:       [[0, 1], [2]]        ← multi-term / Document index
   //   - Array of {id, score}:  [{id:0, score:9}]    ← saat `enrich:true`
   // Kita flatten semuanya jadi satu list ids dengan posisi untuk scoring.
-  const ids: number[] = [];
   for (const entry of rawResults as unknown[]) {
     if (typeof entry === 'number') {
       ids.push(entry);
@@ -151,6 +166,11 @@ export function search(query: string, limit = 50): SearchHit[] {
     if (jLow === qLow) score += 60;
     else if (jLow.startsWith(qLow)) score += 30;
     else if (jLow.includes(qLow)) score += 15;
+
+    // Boost besar: item masuk daftar alias (mis. "sembako" → kode sembako)
+    if (aliasMatch && aliasMatch.codes.includes(item.kode)) {
+      score += 500;
+    }
 
     // Kode query: hanya tampilkan yang cocok prefix
     if (isKodeQuery && !item.kode.startsWith(q)) {
