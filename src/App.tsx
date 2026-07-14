@@ -220,18 +220,12 @@ function App() {
           title="Tanya AI Assistant"
         >
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-            <defs>
-              <linearGradient id="fabgrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#fff" stopOpacity="0.95" />
-                <stop offset="100%" stopColor="#fff" stopOpacity="0.7" />
-              </linearGradient>
-            </defs>
             <path
               d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z"
-              fill="url(#fabgrad)"
+              fill="currentColor"
             />
-            <circle cx="18.5" cy="5.5" r="1.5" fill="#fff" />
-            <circle cx="5" cy="18" r="1" fill="#fff" />
+            <circle cx="18.5" cy="5.5" r="1.5" fill="currentColor" />
+            <circle cx="5" cy="18" r="1" fill="currentColor" />
           </svg>
         </button>
       )}

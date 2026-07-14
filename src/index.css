@@ -1,40 +1,41 @@
-/* ===== Design System: KBLI 2025 Pro ===== */
-/* Modern, glassmorphic, dengan accent gradient & dark mode otomatis */
+/* ===== Design System: Blegal (B-Legal brand) ===== */
+/* Tema: Coklat espresso + emas metallic, kesan mewah & profesional legal */
 
 :root {
-  /* Brand colors */
-  --brand-1: #6366f1;       /* indigo */
-  --brand-2: #8b5cf6;       /* violet */
-  --brand-3: #ec4899;       /* pink */
-  --brand-grad: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-  --brand-grad-soft: linear-gradient(135deg, rgba(99,102,241,.12), rgba(236,72,153,.12));
+  /* Brand colors — B-Legal palette */
+  --brand-1: #3e2723;       /* espresso (coklat tua) — primary */
+  --brand-2: #d4af37;       /* gold metallic — accent */
+  --brand-3: #b8893a;       /* gold deep */
+  --brand-grad: linear-gradient(135deg, #d4af37 0%, #b8893a 60%, #8b6914 100%);
+  --brand-grad-soft: linear-gradient(135deg, rgba(212,175,55,.10), rgba(184,137,58,.10));
+  --brand-grad-dark: linear-gradient(135deg, #3e2723 0%, #2d1a17 100%);
 
-  /* Light theme (default) */
-  --bg: #f8fafc;
+  /* Light theme (default) — cream warm background */
+  --bg: #fbf8f3;
   --bg-elev: #ffffff;
-  --bg-elev-2: #f1f5f9;
-  --bg-glass: rgba(255, 255, 255, 0.72);
-  --border: #e2e8f0;
-  --border-strong: #cbd5e1;
-  --text: #0f172a;
-  --text-muted: #475569;
-  --text-soft: #94a3b8;
+  --bg-elev-2: #f5efe4;
+  --bg-glass: rgba(251, 248, 243, 0.78);
+  --border: #e6dfd4;
+  --border-strong: #c9bfa9;
+  --text: #1a1614;
+  --text-muted: #5a5048;
+  --text-soft: #9a8f7e;
 
-  /* Risk colors */
-  --risk-low: #10b981;
-  --risk-low-bg: rgba(16, 185, 129, 0.12);
-  --risk-mid-low: #84cc16;
-  --risk-mid-low-bg: rgba(132, 204, 22, 0.12);
-  --risk-mid-high: #f59e0b;
-  --risk-mid-high-bg: rgba(245, 158, 11, 0.12);
-  --risk-high: #ef4444;
-  --risk-high-bg: rgba(239, 68, 68, 0.12);
+  /* Risk colors — tetap konsisten, sedikit warm */
+  --risk-low: #2e7d32;
+  --risk-low-bg: rgba(46, 125, 50, 0.12);
+  --risk-mid-low: #689f38;
+  --risk-mid-low-bg: rgba(104, 159, 56, 0.12);
+  --risk-mid-high: #ef6c00;
+  --risk-mid-high-bg: rgba(239, 108, 0, 0.12);
+  --risk-high: #c62828;
+  --risk-high-bg: rgba(198, 40, 40, 0.12);
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
-  --shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.08), 0 2px 4px -1px rgba(15, 23, 42, 0.04);
-  --shadow-lg: 0 20px 40px -12px rgba(15, 23, 42, 0.18), 0 8px 16px -4px rgba(15, 23, 42, 0.08);
-  --shadow-glow: 0 0 0 4px rgba(99, 102, 241, 0.18);
+  /* Shadows — warm tinted */
+  --shadow-sm: 0 1px 2px rgba(62, 39, 35, 0.08);
+  --shadow: 0 4px 16px -2px rgba(62, 39, 35, 0.10), 0 2px 4px -1px rgba(62, 39, 35, 0.05);
+  --shadow-lg: 0 20px 40px -12px rgba(62, 39, 35, 0.22), 0 8px 16px -4px rgba(62, 39, 35, 0.10);
+  --shadow-glow: 0 0 0 4px rgba(212, 175, 55, 0.22);
 
   --radius-sm: 8px;
   --radius: 14px;
@@ -46,47 +47,43 @@
 
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
   --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #0b1020;
-    --bg-elev: #131a2e;
-    --bg-elev-2: #1c2540;
-    --bg-glass: rgba(19, 26, 46, 0.72);
-    --border: #2a3454;
-    --border-strong: #3b4670;
-    --text: #f1f5f9;
-    --text-muted: #cbd5e1;
-    --text-soft: #7c89aa;
+    --bg: #1a1614;
+    --bg-elev: #221c19;
+    --bg-elev-2: #2d2521;
+    --bg-glass: rgba(34, 28, 25, 0.80);
+    --border: #3d322c;
+    --border-strong: #5a4a40;
+    --text: #f5efe4;
+    --text-muted: #c9bfa9;
+    --text-soft: #8a7d6e;
 
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-    --shadow-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.6), 0 8px 16px -4px rgba(0, 0, 0, 0.3);
-    --shadow-glow: 0 0 0 4px rgba(139, 92, 246, 0.25);
-
-    --risk-low-bg: rgba(16, 185, 129, 0.18);
-    --risk-mid-low-bg: rgba(132, 204, 22, 0.18);
-    --risk-mid-high-bg: rgba(245, 158, 11, 0.18);
-    --risk-high-bg: rgba(239, 68, 68, 0.18);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.7), 0 8px 16px -4px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 0 4px rgba(212, 175, 55, 0.28);
   }
 }
 
 :root[data-theme='dark'] {
-  --bg: #0b1020;
-  --bg-elev: #131a2e;
-  --bg-elev-2: #1c2540;
-  --bg-glass: rgba(19, 26, 46, 0.72);
-  --border: #2a3454;
-  --border-strong: #3b4670;
-  --text: #f1f5f9;
-  --text-muted: #cbd5e1;
-  --text-soft: #7c89aa;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.6), 0 8px 16px -4px rgba(0, 0, 0, 0.3);
-  --shadow-glow: 0 0 0 4px rgba(139, 92, 246, 0.25);
+  --bg: #1a1614;
+  --bg-elev: #221c19;
+  --bg-elev-2: #2d2521;
+  --bg-glass: rgba(34, 28, 25, 0.80);
+  --border: #3d322c;
+  --border-strong: #5a4a40;
+  --text: #f5efe4;
+  --text-muted: #c9bfa9;
+  --text-soft: #8a7d6e;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.7), 0 8px 16px -4px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 0 4px rgba(212, 175, 55, 0.28);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -118,7 +115,7 @@ button {
 
 input, textarea, select { font-family: inherit; color: inherit; }
 
-a { color: var(--brand-1); text-decoration: none; }
+a { color: var(--brand-2); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* Scrollbar */
@@ -132,7 +129,7 @@ a:hover { text-decoration: underline; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-soft); }
 
 ::selection {
-  background: rgba(139, 92, 246, 0.3);
+  background: rgba(212, 175, 55, 0.35);
   color: var(--text);
 }
 

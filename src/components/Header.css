@@ -35,7 +35,7 @@
 .brand-logo {
   display: flex;
   align-items: center;
-  filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.3));
+  filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.35));
 }
 .brand-text {
   display: flex;
@@ -44,9 +44,10 @@
   min-width: 0;
 }
 .brand-name {
-  font-weight: 800;
-  font-size: 18px;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.01em;
   color: var(--text);
   white-space: nowrap;
 }
@@ -79,12 +80,12 @@
 }
 .ai-toggle-btn:hover {
   border-color: var(--brand-2);
-  color: var(--text);
+  color: var(--brand-1);
 }
 .ai-toggle-btn.active {
   background: var(--brand-grad-soft);
   border-color: var(--brand-2);
-  color: var(--brand-2);
+  color: var(--brand-3);
 }
 .ai-dot {
   width: 8px;

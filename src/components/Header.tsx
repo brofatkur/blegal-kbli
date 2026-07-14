@@ -53,20 +53,23 @@ export function Header({ onOpenSettings, onToggleAi, aiOnline }: HeaderProps) {
             <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
               <defs>
                 <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#6366f1" />
-                  <stop offset="50%" stopColor="#8b5cf6" />
-                  <stop offset="100%" stopColor="#ec4899" />
+                  <stop offset="0%" stopColor="#3e2723" />
+                  <stop offset="100%" stopColor="#2d1a17" />
+                </linearGradient>
+                <linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#d4af37" />
+                  <stop offset="100%" stopColor="#b8893a" />
                 </linearGradient>
               </defs>
-              <rect x="2" y="2" width="28" height="28" rx="8" fill="url(#lg)" />
+              <rect x="2" y="2" width="28" height="28" rx="8" fill="url(#lg)" stroke="url(#lg2)" strokeWidth="1.2" />
               <path
                 d="M11 23V9h5.2c2.7 0 4.4 1.4 4.4 3.6 0 1.6-.9 2.7-2.4 3.1 1.8.3 2.9 1.5 2.9 3.4 0 2.4-1.7 3.9-4.6 3.9H11zm2.7-8.1h2.1c1.2 0 1.9-.6 1.9-1.5 0-.9-.7-1.5-1.9-1.5h-2.1v3zm0 5.8h2.3c1.3 0 2.1-.6 2.1-1.7 0-1-.8-1.7-2.1-1.7h-2.3v3.4z"
-                fill="white"
+                fill="url(#lg2)"
               />
             </svg>
           </span>
           <span className="brand-text">
-            <span className="brand-name"><span className="gradient-text">Blegal</span></span>
+            <span className="brand-name">B<span className="gradient-text">legal</span></span>
             <span className="brand-tag">KBLI 2025 • Klasifikasi Lapangan Usaha Indonesia</span>
           </span>
         </a>

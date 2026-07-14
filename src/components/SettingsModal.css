@@ -130,7 +130,7 @@
 }
 .provider-tab.active {
   background: var(--bg-elev);
-  color: var(--brand-2);
+  color: var(--brand-3);
   box-shadow: var(--shadow-sm);
 }
 
@@ -144,17 +144,17 @@
 .btn-primary {
   padding: 11px 20px;
   background: var(--brand-grad);
-  color: white;
+  color: #1a1614;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 700;
   transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
 }
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-1px);
   filter: brightness(1.08);
-  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.45);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.5);
 }
 .btn-primary:disabled {
   opacity: 0.5;

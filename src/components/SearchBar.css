@@ -66,23 +66,35 @@
   animation: spin 0.7s linear infinite;
 }
 
+.sug-kode {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brand-3);
+  background: var(--bg-elev-2);
+  padding: 3px 9px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
 .search-submit {
   height: 42px;
   padding: 0 22px;
   border-radius: var(--radius);
   background: var(--brand-grad);
-  color: white;
+  color: #1a1614;
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.01em;
   flex-shrink: 0;
   transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
 }
 .search-submit:hover {
   transform: translateY(-1px);
   filter: brightness(1.08);
-  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.45);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.55);
 }
 .search-submit:active {
   transform: translateY(0);
